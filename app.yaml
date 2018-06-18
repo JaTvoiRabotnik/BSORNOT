@@ -1,0 +1,6 @@
+runtime: python36
+api_version: 1
+threadsafe: true
+handlers:
+- url: /.*
+  script: bot.app
