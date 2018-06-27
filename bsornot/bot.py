@@ -5,17 +5,9 @@ Will listen to mentions of @BSORNOT1 and reply with its
 assessment of whether the text is BS.
 """
 import tweepy
-import secrets
+import evaluator
+from secrets import consumer_key, consumer_secret, access_token, access_secret
 
-
-# create an OAuthHandler instance
-# Twitter requires all requests to use OAuth for authentication
-auth = tweepy.OAuthHandler(secrets.consumer_key, secrets.consumer_secret)
-
-auth.set_access_token(secrets.access_token, secrets.access_secret)
-
-# Construct the API instance
-api = tweepy.API(auth)  # create an API object
 
 ''' Things we can do with the REST API:
 # get all public tweets:
@@ -29,13 +21,14 @@ for friend in user.friends():
     print(friend.screen_name)
 '''
 
+# create an OAuthHandler instance
+# Twitter requires all requests to use OAuth for authentication
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
-def tweet_response(text, username, status_id):
-    """Respond to query for a BS evaluation."""
-    answer = " I don't know yet if this is BS or not."
+auth.set_access_token(access_token, access_secret)
 
-    api.update_status(status='@{0}'.format(username) + answer,
-                      in_reply_to_status_id=status_id)
+# Construct the API instance
+api = tweepy.API(auth)  # create an API object
 
 
 # create a class inherithing from the tweepy StreamListener
@@ -51,12 +44,13 @@ class BotStreamer(tweepy.StreamListener):
         """Event called when a new status arrives."""
         username = status.user.screen_name
         status_id = status.id
+        status_text = status.text
 
-    # entities provide structured data from Tweets including resolved URLs,
-    # media, hashtags and mentions without having to parse the text to extract
-    # that information. We are only interested in the text for now.
-        tweet_response(status.text, username, status_id)
-        print(status.text)
+        # entities provide structured data from Tweets including resolved URLs,
+        # media, hashtags and mentions without having to parse the text to
+        # extract that information. We are only interested in the text for now.
+        api.update_status(status=evaluator.evaluate(status_text, username),
+                          in_reply_to_status_id=status_id)
 
 
 myStreamListener = BotStreamer()
