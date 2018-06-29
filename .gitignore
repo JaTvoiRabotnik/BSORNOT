@@ -105,3 +105,4 @@ venv.bak/
 
 # secrets
 secrets.py
+google_nlp_service_account.json

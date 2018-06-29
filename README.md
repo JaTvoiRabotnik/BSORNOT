@@ -4,8 +4,11 @@ A robot for detecting BS statements
 Currently this works as a Twitter bot. Mention **@BSORNOT1** in order to get an
 assessment of whether the statement is bullshit or not.
 
-Next developments:
+To do:
 
+- develop the other metrics
+- start making use of Google NLP API
+- create startup script (so that when machine restarts service is not interrupted)
 - add a REST API to allow other services to ask questions to
 the robot.
 - add a streamer to Telegram
