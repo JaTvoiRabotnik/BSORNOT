@@ -28,4 +28,4 @@ To run the Twitter streamer use:
 python -u bsornot/bot.py
 ```
 
-Note that the source code does not include the file *secrets.py*, for obvious reasons. That means you will need to mock it in order to run it locally. There's no reason for you to want to test the streamer though (well, not yet anyway... we are nowhere near close to have to worry about scalability).
+Note that the source code does not include the file *secrets.py*, or other account secrets, for obvious reasons. That means you will need to mock it in order to run it locally. There's no reason for you to want to test the streamer though (well, not yet anyway... we are nowhere near close to have to worry about scalability). The NLP APIs are a different story, so in order to test the system locally you will need to have your own mock project on Google Cloud.
