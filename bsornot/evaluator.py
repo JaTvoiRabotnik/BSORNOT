@@ -6,9 +6,9 @@ def evaluate(text):
     """Return a score for BS."""
     explanation = re.compile('.+but.+', re.IGNORECASE)
     if explanation.match(text):
-        return 0.9
+        return float(0.9)
     else:
-        return 0.7
+        return float(0.7)
 
 
 def parse_evaluation(text, username):

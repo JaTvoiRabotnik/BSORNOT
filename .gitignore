@@ -108,4 +108,5 @@ secrets.py
 google_nlp_service_account.json
 
 # data
-/data
+/data/evaluation_positive.csv
+/data/evaluation_negative.csv

@@ -1,6 +1,7 @@
 """Test class for Evaluators."""
 import unittest
 import bsornot.evaluator as evaluator
+import csv
 
 
 class TestMetrics(unittest.TestCase):
@@ -14,26 +15,27 @@ class TestMetrics(unittest.TestCase):
     - Bad grammar
     """
 
-    def test_explanation(self):
-        """Testing explanations."""
-        # positive cases
-        excuses = []
-        excuses.add("I like you, but I am just not ready for a relationship")
-        excuses.add("I'm not a racist, but I think black people get too many \
-                   advantages")
-        excuses.add("I'm sorry, but I am very busy with my career.")
-        for excuse in excuses:
-            result = evaluator.evaluate(excuse, "user")
-            # a result greater than 0.8 indicates BS.
-            self.assertTrue(result >= 0.8)
+    def test_BS_explanation(self):
+        """Testing explanations - definitely BS."""
+        with open('data/test_cases_positive.csv', newline='') as csvfile:
+            excusesreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+            for row in excusesreader:
+                label = float(row[1])
+                result = evaluator.evaluate(row[0])
+                # a result greater than 0.8 indicates BS.
+                errorMessage = '{0} is less than {1} - {2}'.format(result, label, row[0])
+                self.assertTrue(result >= label, errorMessage)
 
-        # negative cases
-        valids = []
-        valids.add("I am kind, but also very demanding.")
-        for valid in valids:
-            result = evaluator.evaluate(valid, "user")
-            # a result less than 0.8 indicates uncertainty.
-            self.assertTrue(result < 0.8)
+    def test_Non_BS_explanation(self):
+        """Testing explanations - not sure whether BS or Not."""
+        with open('data/test_cases_negative.csv', newline='') as csvfile:
+            excusesreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+            for row in excusesreader:
+                label = float(row[1])
+                result = evaluator.evaluate(row[0])
+                # a result smaller than 0.8 indicates uncertainty.
+                errorMessage = '{0} is greater than {1} - {2}'.format(result, label, row[0])
+                self.assertTrue(result <= label, errorMessage)
 
     '''
     def test_2(self):
