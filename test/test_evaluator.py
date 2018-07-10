@@ -17,23 +17,23 @@ class TestMetrics(unittest.TestCase):
     def test_explanation(self):
         """Testing explanations."""
         # positive cases
-        excuse1 = "I like you, but I am just not ready for a relationship"
-        excuse2 = "I'm not a racist, but I think black people get too many \
-                   advantages"
-        excuse3 = "I'm sorry, but I am very busy with my career."
-        expected_OK = "@user Explanation is usually BS"
-        result1 = evaluator.evaluate(excuse1, "user")
-        self.assertEqual(result1, expected_OK)
-        result2 = evaluator.evaluate(excuse2, "user")
-        self.assertEqual(result2, expected_OK)
-        result3 = evaluator.evaluate(excuse3, "user")
-        self.assertEqual(result3, expected_OK)
+        excuses = []
+        excuses.add("I like you, but I am just not ready for a relationship")
+        excuses.add("I'm not a racist, but I think black people get too many \
+                   advantages")
+        excuses.add("I'm sorry, but I am very busy with my career.")
+        for excuse in excuses:
+            result = evaluator.evaluate(excuse, "user")
+            # a result greater than 0.8 indicates BS.
+            self.assertTrue(result >= 0.8)
 
         # negative cases
-        valid1 = "I am kind, but also very demanding."
-        expected_NOK = "@user I don't know yet if this is BS or not."
-        result1 = evaluator.evaluate(valid1, "user")
-        self.assertEqual(result1, expected_NOK)
+        valids = []
+        valids.add("I am kind, but also very demanding.")
+        for valid in valids:
+            result = evaluator.evaluate(valid, "user")
+            # a result less than 0.8 indicates uncertainty.
+            self.assertTrue(result < 0.8)
 
     '''
     def test_2(self):
