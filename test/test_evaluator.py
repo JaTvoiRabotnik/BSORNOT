@@ -7,10 +7,9 @@ class TestMetrics(unittest.TestCase):
     """
     Testing the metrics.
 
-    There are 5 initial metrics:
+    There are 4 initial metrics:
     - Explanations
     - Ambiguity
-    - Hate-speech
     - Plural use
     - Bad grammar
     """

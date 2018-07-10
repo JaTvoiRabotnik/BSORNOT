@@ -6,6 +6,7 @@ assessment of whether the statement is bullshit or not.
 
 To do:
 
+- collect data for testing metrics
 - develop the other metrics
 - start making use of Google NLP API
 - create startup script (so that when machine restarts service is not interrupted)
