@@ -1,6 +1,7 @@
 """Evaluator engine."""
 import csv
-import bsornot.explanationscore as explanationscore
+from bsornot.explanationscore import Explanation
+from bsornot.lengthscore import Length
 
 
 class Evaluator:
@@ -16,7 +17,8 @@ class Evaluator:
         with open('data/weights.csv', mode='r') as csvfile:
             reader = csv.DictReader(csvfile)
             w = {rows[0]: rows[1] for rows in reader}
-        self.explanation = explanationscore.Explanation(w['explanation'])
+        self.explanation = Explanation(w['explanation'])
+        self.explanation = Length(w['length'])
 
     def isBS(self, text):
         """Return a score for BS."""
