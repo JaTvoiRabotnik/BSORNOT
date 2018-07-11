@@ -1,21 +1,40 @@
 """Evaluator engine."""
-import re
+import csv
+import bsornot.explanationscore as explanationscore
 
 
-def evaluate(text):
-    """Return a score for BS."""
-    explanation = re.compile('.+but.+', re.IGNORECASE)
-    if explanation.match(text):
-        return float(0.9)
-    else:
-        return float(0.7)
+class Evaluator:
+    """
+    Evaluator class for calculating scores.
 
+    Initialises dictionaries and evaluates scores of BS.
+    """
 
-def parse_evaluation(text, username):
-    """Respond to query for a BS evaluation."""
-    score = evaluate(text)
-    response = '@{0}'.format(username)
-    if score >= 0.8:
-        return response + " Explanation is usually BS"
-    else:
-        return response + " I don't know yet if this is BS or not."
+    def __init__(self, name):
+        """Initialize the dictionary of weights."""
+        w = {}
+        with open('data/weights.csv', mode='r') as csvfile:
+            reader = csv.DictReader(csvfile)
+            w = {rows[0]: rows[1] for rows in reader}
+        self.explanation = explanationscore.Explanation(w['explanation'])
+
+    def isBS(self, text):
+        """Return a score for BS."""
+        total = 0
+        scores = []
+        scores.append(self.explanation.score(text))
+        for score in scores:
+            total += score
+        """Threshold for BS is 80%"""
+        if total >= 0.8:
+            return True
+        else:
+            return False
+
+    def parse_evaluation(self, text, username):
+        """Respond to query for a BS evaluation."""
+        response = '@{0} '.format(username)
+        if self.isBS(text):
+            return response + "Explanation is usually BS"
+        else:
+            return response + "I don't know yet if this is BS or not."

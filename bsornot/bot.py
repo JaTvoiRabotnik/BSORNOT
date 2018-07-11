@@ -16,7 +16,7 @@ for tweet in public_tweets:
     print(tweet.text)
 
 # get list of followers:
-user = api.get_user('BOTORNOT1')
+user = api.get_user('BSORNOT1')
 for friend in user.friends():
     print(friend.screen_name)
 '''
@@ -53,6 +53,7 @@ class BotStreamer(tweepy.StreamListener):
                           in_reply_to_status_id=status_id)
 
 
+evaluatorEngine = evaluator.Evaluator()
 myStreamListener = BotStreamer()
 
 #  Construct the Stream instance

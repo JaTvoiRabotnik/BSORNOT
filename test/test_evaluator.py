@@ -1,6 +1,6 @@
 """Test class for Evaluators."""
 import unittest
-import bsornot.evaluator as evaluator
+from bsornot.explanationscore import Explanation
 import csv
 
 
@@ -15,27 +15,40 @@ class TestMetrics(unittest.TestCase):
     - Bad grammar
     """
 
-    def test_BS_explanation(self):
+    def setup(self):
+        """Setting up for all tests in this class."""
+
+
+class TestExplanationsPositive(TestMetrics):
+    """Testing explanations that ARE bullshit."""
+
+    def runTest(self):
         """Testing explanations - definitely BS."""
+        explanation = Explanation(1)  # set weight to 1
         with open('data/test_cases_positive.csv', newline='') as csvfile:
             excusesreader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in excusesreader:
                 label = float(row[1])
-                result = evaluator.evaluate(row[0])
+                result = explanation.score(row[0])
                 # a result greater than 0.8 indicates BS.
-                errorMessage = '{0} is less than {1} - {2}'.format(result, label, row[0])
-                self.assertTrue(result >= label, errorMessage)
+                message = '{0} < {1} - {2}'.format(result, label, row[0])
+                self.assertTrue(result >= label, message)
 
-    def test_Non_BS_explanation(self):
+
+class TestExplanationsNegative(TestMetrics):
+    """Testing explanations that ARE NOT bullshit."""
+
+    def runTest(self):
         """Testing explanations - not sure whether BS or Not."""
+        explanation = Explanation(1)  # set weight to 1
         with open('data/test_cases_negative.csv', newline='') as csvfile:
             excusesreader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in excusesreader:
                 label = float(row[1])
-                result = evaluator.evaluate(row[0])
+                result = explanation.score(row[0])
                 # a result smaller than 0.8 indicates uncertainty.
-                errorMessage = '{0} is greater than {1} - {2}'.format(result, label, row[0])
-                self.assertTrue(result <= label, errorMessage)
+                message = '{0} > {1} - {2}'.format(result, label, row[0])
+                self.assertTrue(result <= label, message)
 
     '''
     def test_2(self):
@@ -54,7 +67,3 @@ class TestMetrics(unittest.TestCase):
         self.func.clear_state()
         self.assertEqual(self.func.state, 0)
     '''
-
-
-if __name__ == '__main__':
-    unittest.main()
