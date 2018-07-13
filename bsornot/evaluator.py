@@ -18,13 +18,14 @@ class Evaluator:
             reader = csv.DictReader(csvfile)
             w = {rows[0]: rows[1] for rows in reader}
         self.explanation = Explanation(w['explanation'])
-        self.explanation = Length(w['length'])
+        self.length = Length(w['length'])
 
     def isBS(self, text):
         """Return a score for BS."""
         total = 0
         scores = []
         scores.append(self.explanation.score(text))
+        scores.append(self.length.score(text))
         for score in scores:
             total += score
         """Threshold for BS is 80%"""
