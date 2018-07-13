@@ -1,8 +1,8 @@
 """Evaluator engine."""
 import csv
-from bsornot.explanationscore import Explanation
-from bsornot.lengthscore import Length
-from bsornot.saliencescore import Salience
+from explanationscore import Explanation
+from lengthscore import Length
+from saliencescore import Salience
 
 
 class Evaluator:
