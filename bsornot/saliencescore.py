@@ -15,9 +15,9 @@ class Salience:
     The more distributed the importance of the entities, the higher the score.
     """
 
-    def __init__(self, name):
+    def __init__(self, weight):
         """Initialise the class."""
-        self.weight = name
+        self.weight = weight
 
     def score(self, text):
         """
@@ -34,7 +34,7 @@ class Salience:
             for salience in saliences:
                 variance += math.pow(salience - (1/N), 2)
             variance *= (1/(N - 1))
-        return variance * self.weight
+        return variance * float(self.weight)
 
     def entity_sentiment_text(self, text):
         """Detect entity sentiment in the provided text."""

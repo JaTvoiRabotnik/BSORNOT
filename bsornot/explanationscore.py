@@ -9,9 +9,9 @@ class Explanation:
     Decides whether a statement is an explanation or not.
     """
 
-    def __init__(self, name):
+    def __init__(self, weight):
         """Initialise the class."""
-        self.weight = name
+        self.weight = weight
 
     def score(self, text):
         """
@@ -21,6 +21,6 @@ class Explanation:
         """
         explanation = re.compile('.+but.+', re.IGNORECASE)
         if explanation.match(text):
-            return 1 * self.weight
+            return 1 * float(self.weight)
         else:
-            return 0 * self.weight
+            return 0 * float(self.weight)

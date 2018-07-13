@@ -2,6 +2,7 @@
 import csv
 from bsornot.explanationscore import Explanation
 from bsornot.lengthscore import Length
+from bsornot.saliencescore import Salience
 
 
 class Evaluator:
@@ -11,14 +12,17 @@ class Evaluator:
     Initialises dictionaries and evaluates scores of BS.
     """
 
-    def __init__(self, name):
-        """Initialize the dictionary of weights."""
+    def __init__(self):
+        """Initialize the dictionary of weights and scoring classes."""
         w = {}
-        with open('data/weights.csv', mode='r') as csvfile:
-            reader = csv.DictReader(csvfile)
-            w = {rows[0]: rows[1] for rows in reader}
+        with open('data/weights.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+            for row in reader:
+                w[row[0]] = row[1]
+                print(row[0] + ", " + row[1])
         self.explanation = Explanation(w['explanation'])
         self.length = Length(w['length'])
+        self.salience = Salience(w['salience'])
 
     def isBS(self, text):
         """Return a score for BS."""
@@ -26,6 +30,7 @@ class Evaluator:
         scores = []
         scores.append(self.explanation.score(text))
         scores.append(self.length.score(text))
+        scores.append(self.salience.score(text))
         for score in scores:
             total += score
         """Threshold for BS is 80%"""
@@ -41,3 +46,16 @@ class Evaluator:
             return response + "Explanation is usually BS"
         else:
             return response + "I don't know yet if this is BS or not."
+
+    def parse_scoring(self, text, username):
+        """Respond to a query with breakdown of scores."""
+        total = 0
+        scores = []
+        scores.append(self.explanation.score(text))
+        scores.append(self.length.score(text))
+        scores.append(self.salience.score(text))
+        for score in scores:
+            total += score
+        header = '@{0} '.format(username)
+        response = "Explanation = {0}, Length = {1}, Salience variance = {2}. Total: {3}".format(scores[0], scores[1], scores[2], total)
+        return header + response

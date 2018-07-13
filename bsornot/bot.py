@@ -5,7 +5,7 @@ Will listen to mentions of @BSORNOT1 and reply with its
 assessment of whether the text is BS.
 """
 import tweepy
-import evaluator
+from bsornot.evaluator import Evaluator
 from secrets import consumer_key, consumer_secret, access_token, access_secret
 
 
@@ -49,11 +49,11 @@ class BotStreamer(tweepy.StreamListener):
         # entities provide structured data from Tweets including resolved URLs,
         # media, hashtags and mentions without having to parse the text to
         # extract that information. We are only interested in the text for now.
-        api.update_status(status=evaluator.evaluate(status_text, username),
+        api.update_status(status=evaluator.parse_scoring(status_text, username),
                           in_reply_to_status_id=status_id)
 
 
-evaluatorEngine = evaluator.Evaluator()
+evaluatorEngine = Evaluator()
 myStreamListener = BotStreamer()
 
 #  Construct the Stream instance
