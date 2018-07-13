@@ -26,14 +26,17 @@ class Salience:
         Return value between 0 and 1.
         """
         saliences = self.entity_sentiment_text(text)
-        N = saliences.length()
-        inverse_variance = 0
-        for salience in saliences:
-            inverse_variance += math.pow(salience - (1/N), 2)
-        inverse_variance *= 1 - (1/(N - 1))
-        return inverse_variance * self.weight
+        N = len(saliences)
+        variance = 0
+        if N == 1:
+            variance = 1
+        else:
+            for salience in saliences:
+                variance += math.pow(salience - (1/N), 2)
+            variance *= (1/(N - 1))
+        return variance * self.weight
 
-    def entity_sentiment_text(text):
+    def entity_sentiment_text(self, text):
         """Detect entity sentiment in the provided text."""
         client = language.LanguageServiceClient()
 
