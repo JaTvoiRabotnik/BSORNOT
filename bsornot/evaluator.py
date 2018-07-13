@@ -15,7 +15,7 @@ class Evaluator:
     def __init__(self):
         """Initialize the dictionary of weights and scoring classes."""
         w = {}
-        with open('data/weights.csv', newline='') as csvfile:
+        with open('data/weights.csv') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in reader:
                 w[row[0]] = row[1]
