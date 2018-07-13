@@ -5,7 +5,7 @@ Will listen to mentions of @BSORNOT1 and reply with its
 assessment of whether the text is BS.
 """
 import tweepy
-from bsornot.evaluator import Evaluator
+from evaluator import Evaluator
 from secrets import consumer_key, consumer_secret, access_token, access_secret
 
 
