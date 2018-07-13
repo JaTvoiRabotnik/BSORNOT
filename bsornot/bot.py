@@ -49,7 +49,7 @@ class BotStreamer(tweepy.StreamListener):
         # entities provide structured data from Tweets including resolved URLs,
         # media, hashtags and mentions without having to parse the text to
         # extract that information. We are only interested in the text for now.
-        api.update_status(status=evaluator.parse_scoring(status_text, username),
+        api.update_status(status=evaluatorEngine.parse_scoring(status_text, username),
                           in_reply_to_status_id=status_id)
 
 
