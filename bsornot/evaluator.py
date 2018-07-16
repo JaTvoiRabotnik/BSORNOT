@@ -1,8 +1,9 @@
 """Evaluator engine."""
 import csv
-from explanationscore import Explanation
-from lengthscore import Length
-from saliencescore import Salience
+from flask import jsonify
+from bsornot.explanationscore import Explanation
+from bsornot.lengthscore import Length
+from bsornot.saliencescore import Salience
 
 
 class Evaluator:
@@ -59,3 +60,18 @@ class Evaluator:
         header = '@{0} '.format(username)
         response = "Explanation = {0}, Length = {1}, Salience variance = {2}. Total: {3}".format(scores[0], scores[1], scores[2], total)
         return header + response
+
+    def analyse(self, text):
+        """Respond to a query with breakdown of scores."""
+        total = 0
+        scores = []
+        scores.append(self.explanation.score(text))
+        scores.append(self.length.score(text))
+        scores.append(self.salience.score(text))
+        for score in scores:
+            total += score
+        response = {'explanation': '{0}'.format(scores[0]),
+                    'length': '{0}'.format(scores[1]),
+                    'salience_variance': '{0}'.format(scores[2]),
+                    'total': '{0}'.format(total)}
+        return jsonify(response)
