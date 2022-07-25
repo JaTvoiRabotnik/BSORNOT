@@ -24,7 +24,7 @@ rsa==3.4.2
 six==1.11.0
 tweepy==3.6.0
 urllib3==1.23
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 flask-cors==3.0.3
 gunicorn==19.7.1
 pyyaml==5.4
